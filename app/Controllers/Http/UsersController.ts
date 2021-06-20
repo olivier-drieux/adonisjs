@@ -4,34 +4,51 @@ import Logger from '@ioc:Adonis/Core/Logger'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import CreateUserValidator from 'App/Validators/CreateUserValidator'
 import UpdateUserValidator from 'App/Validators/UpdateUserValidator'
+import Hash from '@ioc:Adonis/Core/Hash'
 
 export default class UsersController {
   public async index() {
     return User.all()
   }
 
-  public async store(ctx: HttpContextContract) {
+  public async store({ request }) {
     Logger.info('Creating new user...')
-    await ctx.request.validate(CreateUserValidator)
-    const user = ctx.request.body()
+    await request.validate(CreateUserValidator)
+    const user = request.body()
     return User.create(user)
   }
 
-  public async show(ctx: HttpContextContract) {
-    const { id } = ctx.params
+  public async show({ params }) {
+    const { id } = params
     return await User.findOrFail(id)
   }
 
-  public async update(ctx: HttpContextContract) {
-    await ctx.request.validate(UpdateUserValidator)
-    const { id } = ctx.params
-    const user = ctx.request.body()
+  public async update({ request, params }) {
+    await request.validate(UpdateUserValidator)
+    const { id } = params
+    const user = request.body()
     return User.updateOrCreate({ id }, user)
   }
 
-  public async destroy(ctx: HttpContextContract) {
-    const { id } = ctx.params
+  public async destroy({ params }) {
+    const { id } = params
     const user = await User.findOrFail(id)
     await user.delete()
+  }
+
+  public async login({ request, response, auth }) {
+    const email = request.input('email')
+    const password = request.input('password')
+
+    const user = await User.findByOrFail('email', email)
+
+    // Verify password
+    if (!(await Hash.verify(user.password, password))) {
+      return response.badRequest('Invalid credentials')
+    }
+    Logger.info('User OK')
+
+    // Generate token
+    return await auth.use('api').generate(user)
   }
 }

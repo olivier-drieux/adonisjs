@@ -20,4 +20,5 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 Route.where('id', /^[0-9]+$/)
+Route.post('/login', 'UsersController.login').as('users.login')
 Route.resource('users', 'UsersController').apiOnly().as('users')
