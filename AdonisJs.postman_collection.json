@@ -62,7 +62,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"olivierd47000@gmail.com\",\r\n    \"password\": \"Password123*\",\r\n    \"firstname\": \"\",\r\n    \"lastname\": \"\",\r\n    \"address\": \"\",\r\n    \"siret\": \"\",\r\n    \"phone\": \"\",\r\n}",
+							"raw": "{\r\n    \"email\": \"olivierd47000@gmail.com\",\r\n    \"password\": \"Password123*\",\r\n    \"firstname\": \"firstname\",\r\n    \"lastname\": \"lastname\",\r\n    \"address\": \"address\",\r\n    \"siret\": \"siret\",\r\n    \"phone\": \"0123456789\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -126,7 +126,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"olivierd47000A@gmail.com\",\r\n    \"password\": \"Password123biteses*\"\r\n}",
+							"raw": "{\r\n    \"email\": \"olivierd47000a@gmail.com\",\r\n    \"password\": \"Password123biteses*\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -212,7 +212,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3333/api/users/files/{{idFile}}",
+							"raw": "http://127.0.0.1:3333/api/users/files/10",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -225,7 +225,7 @@
 								"api",
 								"users",
 								"files",
-								"{{idFile}}"
+								"10"
 							]
 						}
 					},
@@ -240,14 +240,19 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "",
+									"key": "file",
 									"type": "file",
 									"src": "/C:/Users/Olivier/Documents/SCI S2FImmo.pdf"
+								},
+								{
+									"key": "type",
+									"value": "OTHER",
+									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3333/api/users/{{idUser}}/files",
+							"raw": "http://127.0.0.1:3333/api/users/5/files",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -259,7 +264,7 @@
 							"path": [
 								"api",
 								"users",
-								"{{idUser}}",
+								"5",
 								"files"
 							]
 						}
@@ -272,7 +277,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:3333/api/users/files/7",
+							"raw": "http://127.0.0.1:3333/api/users/files/26",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -285,7 +290,7 @@
 								"api",
 								"users",
 								"files",
-								"7"
+								"26"
 							]
 						}
 					},
