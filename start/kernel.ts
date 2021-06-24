@@ -24,7 +24,6 @@ Server.middleware.register([
   () => import('@ioc:Adonis/Core/BodyParser'),
   () => import('App/Middleware/LogQueries'),
 ])
-
 /*
 |--------------------------------------------------------------------------
 | Named middleware
@@ -41,4 +40,6 @@ Server.middleware.register([
 | Route.get('dashboard', 'UserController.dashboard').middleware('auth')
 |
 */
-Server.middleware.registerNamed({})
+Server.middleware.registerNamed({
+  auth: () => import('App/Middleware/Auth'),
+})
