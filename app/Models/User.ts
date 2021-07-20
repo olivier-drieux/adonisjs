@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, beforeSave, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import Hash from '@ioc:Adonis/Core/Hash'
 import File from './File'
+import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -26,6 +27,13 @@ export default class User extends BaseModel {
   public lastname: string
 
   @column()
+  @slugify({
+    strategy: 'shortId',
+    fields: ['firstname', 'lastname'],
+  })
+  public slug: string
+
+  @column()
   public address: string
 
   @column()
@@ -42,5 +50,13 @@ export default class User extends BaseModel {
     if (user.$dirty.password) {
       user.password = await Hash.make(user.password)
     }
+  }
+
+  public get fullname() {
+    return `${this.firstname} ${this.lastname}`
+  }
+
+  public toString(): string {
+    return `${this.fullname} (${this.id})`
   }
 }

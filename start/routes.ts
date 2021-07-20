@@ -27,29 +27,32 @@ Route.where('id', /^[0-9]+$/).where('slug', /^[a-z0-9_-]+$/)
 // api routes
 Route.group(() => {
   Route.post('/login', 'UsersController.login').as('users.login')
-
   Route.get('/logout', 'UsersController.logout').as('users.logout')
 
   // User related group
   Route.group(() => {
     // User index, show, store
-    Route.get('/', 'UsersController.index').as('users.index')
     Route.get('/:id', 'UsersController.show').as('users.show')
+    Route.post('/email', 'UsersController.getByEmail').as('users.getByEmail')
     Route.post('/', 'UsersController.store').as('users.store')
+    Route.patch('/:id', 'UsersController.update').as('users.update')
 
     // Token mandatory
     Route.group(() => {
+      Route.post('/searchBy', 'UsersController.getBy').as('users.getBy')
+      Route.get('/', 'UsersController.index').as('users.index')
       // User update, destroy
-      Route.patch('/:id', 'UsersController.update').as('users.update')
       Route.delete('/:id', 'UsersController.destroy').as('users.destroy')
-
-      // File index, show, store, destroy
-      Route.get('/:userId/files', 'FilesController.index').as('users_files.index')
-      Route.get('/files/:id', 'FilesController.show').as('users_files.show')
-      Route.post('/:userId/files', 'FilesController.store').as('users_files.store')
-      Route.delete('/files/:id', 'FilesController.destroy').as('users_files.destroy')
     }).middleware('auth')
   }).prefix('/users')
+
+  Route.group(() => {
+    // File index, show, store, destroy
+    Route.get('/user/:userId', 'FilesController.index').as('users_files.index')
+    Route.get('/:id', 'FilesController.show').as('users_files.show')
+    Route.post('/user/:userId', 'FilesController.store').as('users_files.store')
+    Route.delete('/:id', 'FilesController.destroy').as('users_files.destroy')
+  }).prefix('/files')
 }).prefix('/api')
 
 // Fatory
@@ -57,4 +60,4 @@ Route.get('/factory', async () => {
   await User.query().whereRaw('1=1').delete()
   await UserFactory.with('files', 3).createMany(10)
   return 'Factory done'
-}).middleware('auth')
+})

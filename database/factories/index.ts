@@ -1,6 +1,7 @@
 import Factory from '@ioc:Adonis/Lucid/Factory'
 import File, { FileType } from 'App/Models/File'
 import User from 'App/Models/User'
+import slugify from 'slugify'
 
 export const FileFactory = Factory.define(File, ({ faker }) => {
   return {
@@ -17,7 +18,7 @@ export const UserFactory = Factory.define(User, ({ faker }) => {
     lastname: faker.name.lastName(),
     address: faker.address.streetAddress(true),
     phone: '0123456789',
-    siret: faker.company.bs(),
+    siret: '11111111',
   }
 })
   .relation('files', () => FileFactory)

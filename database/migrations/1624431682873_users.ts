@@ -10,6 +10,7 @@ export default class UsersSchema extends BaseSchema {
       table.string('password', 180).notNullable()
       table.string('firstname').notNullable()
       table.string('lastname').notNullable()
+      table.string('slug').notNullable()
       table.string('address').notNullable()
       table.string('siret').notNullable()
       table.string('phone').notNullable()
