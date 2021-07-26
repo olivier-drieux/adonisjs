@@ -5,7 +5,7 @@
   "scripts": {
     "build": "node ace build --production",
     "start": "node server.js",
-    "dev": "(echo olivierd | sudo -S command) & (sudo service mysql start && sudo service apache2 start) & node ace serve --watch",
+    "dev": "(echo olivierd | sudo -S service mysql start) && (echo olivierd | sudo -S service apache2 start) && node ace serve --watch",
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write ."
   },
