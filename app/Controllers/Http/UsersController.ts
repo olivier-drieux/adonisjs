@@ -1,6 +1,5 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
-import Logger from '@ioc:Adonis/Core/Logger'
 import Hash from '@ioc:Adonis/Core/Hash'
 import File from 'App/Models/File'
 import UserValidator from 'App/Validators/UserValidator'
@@ -16,6 +15,7 @@ export default class UsersController {
   public async store({ request }: HttpContextContract) {
     const validated = await request.validate(UserValidator)
     const user = await User.create(validated)
+    console.log('User created:', user)
     if (user) {
       await Mail.sendLater((message) => {
         message
@@ -45,6 +45,7 @@ export default class UsersController {
 
   public async getByEmail({ request }: HttpContextContract) {
     const { email } = request.body()
+    console.log('GetByEmail', email)
     const user = await User.findBy('email', email)
     return { email, exists: user !== null }
   }

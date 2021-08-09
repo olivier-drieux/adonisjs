@@ -1,5 +1,6 @@
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { UserStatus } from 'App/Models/User'
 
 export default class UserValidator {
   constructor(protected ctx: HttpContextContract) {}
@@ -21,6 +22,7 @@ export default class UserValidator {
     address: schema.string(),
     siret: schema.string(),
     phone: schema.string({}, [rules.mobile({ locales: ['fr-FR'] })]),
+    status: schema.enum(Object.values(UserStatus)),
   })
 
   public messages = {

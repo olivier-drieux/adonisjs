@@ -42,6 +42,9 @@ export default class User extends BaseModel {
   @column()
   public phone: string
 
+  @column()
+  public status: string
+
   @hasMany(() => File)
   public files: HasMany<typeof File>
 
@@ -59,4 +62,11 @@ export default class User extends BaseModel {
   public toString(): string {
     return `${this.fullname} (${this.id})`
   }
+}
+
+export enum UserStatus {
+  CREATED = 'created',
+  VALIDATED = 'validated',
+  REJECTED = 'rejected',
+  BLACK8LISTED = 'black_listed',
 }

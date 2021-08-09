@@ -7,11 +7,11 @@ import Application from '@ioc:Adonis/Core/Application'
 export default class LogRequest {
   public async handle(ctx: HttpContextContract, next: () => Promise<void>) {
     Event.on('db:query', (query) => {
-      if (Application.inProduction) {
-        Logger.debug(query.sql)
-      } else {
-        Database.prettyPrint(query)
-      }
+      // if (Application.inProduction) {
+      //   Logger.debug(query.sql)
+      // } else {
+      //   Database.prettyPrint(query)
+      // }
     })
     await next()
   }

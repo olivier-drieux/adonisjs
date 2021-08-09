@@ -1,4 +1,5 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
+import { UserStatus } from 'App/Models/User'
 
 export default class UsersSchema extends BaseSchema {
   protected tableName = 'users'
@@ -14,6 +15,7 @@ export default class UsersSchema extends BaseSchema {
       table.string('address').notNullable()
       table.string('siret').notNullable()
       table.string('phone').notNullable()
+      table.enum('status', Object.values(UserStatus)).defaultTo(UserStatus.CREATED).notNullable()
       table.timestamps(true, true)
     })
   }
