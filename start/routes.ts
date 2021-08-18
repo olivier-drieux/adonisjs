@@ -48,10 +48,10 @@ Route.group(() => {
 
   Route.group(() => {
     // File index, show, store, destroy
-    Route.get('/user/:userId', 'FilesController.index').as('users_files.index')
-    Route.get('/:id', 'FilesController.show').as('users_files.show')
-    Route.post('/user/:userId', 'FilesController.store').as('users_files.store')
-    Route.delete('/:id', 'FilesController.destroy').as('users_files.destroy')
+    Route.get('/user/:userId', 'UserFilesController.index').as('users_files.index')
+    Route.get('/:id', 'UserFilesController.show').as('users_files.show')
+    Route.post('/', 'UserFilesController.store').as('users_files.store')
+    Route.delete('/:id', 'UserFilesController.destroy').as('users_files.destroy')
   }).prefix('/files')
 }).prefix('/api')
 

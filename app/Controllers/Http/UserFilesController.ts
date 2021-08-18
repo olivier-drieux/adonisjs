@@ -7,7 +7,7 @@ import FileValidator from 'App/Validators/FileValidator'
 import { cuid } from '@ioc:Adonis/Core/Helpers'
 import slugify from 'slugify'
 
-export default class FilesController {
+export default class UserFilesController {
   public async index({ params }: HttpContextContract) {
     const { userId } = params
     const user = await User.findOrFail(userId)
@@ -21,10 +21,9 @@ export default class FilesController {
     return await File.findOrFail(id)
   }
 
-  public async store({ request, response, params }: HttpContextContract) {
+  public async store({ request, response }: HttpContextContract) {
     await request.validate(FileValidator)
-    const { userId } = params
-    const { type } = request.body()
+    const { type, userId } = request.body()
     const user = await User.findOrFail(userId)
     const file = request.file('file')
     if (!file) {
@@ -34,7 +33,7 @@ export default class FilesController {
 
     const clientNameSlug = slugify(file.clientName)
     const fileName = `${cuid()}_${clientNameSlug}`
-    await file.move(Application.tmpPath(`uploads/${user.id}`), {
+    await file.move(Application.tmpPath(`uploads/user-file/${user.id}`), {
       name: fileName,
     })
     return await File.create({
