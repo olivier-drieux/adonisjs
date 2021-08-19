@@ -1,11 +1,13 @@
+import Logger from '@ioc:Adonis/Core/Logger'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import Hash from '@ioc:Adonis/Core/Hash'
-import File from 'App/Models/File'
+import UserFile from 'App/Models/UserFile'
 import UserValidator from 'App/Validators/UserValidator'
 import LoginValidator from 'App/Validators/LoginValidator'
 import Mail from '@ioc:Adonis/Addons/Mail'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import UserUpdateValidator from 'App/Validators/UserUpdateValidator'
 
 export default class UsersController {
   public async index() {
@@ -53,14 +55,8 @@ export default class UsersController {
   public async update(ctx: HttpContextContract) {
     const { request, response, params } = ctx
     const { id } = params
-    // Add ID in user validator
-    const userSchema = new UserValidator(ctx)
-    const updateuserSchema = schema.create({
-      id: schema.number([rules.unique({ table: 'users', column: 'id', whereNot: { id: id } })]),
-    })
-    userSchema.schema.tree = { ...userSchema.schema.tree, ...updateuserSchema.tree }
-
-    const userValidated = await request.validate(userSchema)
+    Logger.info(`Updating user n°${id}...`)
+    const userValidated = await request.validate(UserUpdateValidator)
     const user = await User.findOrFail(id)
     if (user.id !== userValidated.id) {
       return response.unauthorized()
@@ -72,7 +68,7 @@ export default class UsersController {
     const { id } = params
     const user = await User.findOrFail(id)
     await user.delete()
-    File.deleteFolder(id)
+    UserFile.deleteFolder(id)
   }
 
   public async login({ request, response, auth }: HttpContextContract) {
@@ -89,5 +85,12 @@ export default class UsersController {
 
   public async logout({ auth }) {
     await auth.use('api').logout()
+  }
+
+  public async auth({ request }: HttpContextContract) {
+    const { token } = request.body()
+    Logger.info(`Searching user by token ${token}`)
+    const user = await User.findByOrFail('token', token)
+    return { user }
   }
 }

@@ -1,11 +1,10 @@
 import Factory from '@ioc:Adonis/Lucid/Factory'
-import File, { FileType } from 'App/Models/File'
+import UserFile, { UserFileType } from 'App/Models/UserFile'
 import User from 'App/Models/User'
-import slugify from 'slugify'
 
-export const FileFactory = Factory.define(File, ({ faker }) => {
+export const FileFactory = Factory.define(UserFile, ({ faker }) => {
   return {
-    type: faker.random.arrayElement(Object.keys(FileType)),
+    type: faker.random.arrayElement(Object.keys(UserFileType)),
     path: faker.random.image(),
   }
 }).build()

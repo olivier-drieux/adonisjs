@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, beforeSave, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import Hash from '@ioc:Adonis/Core/Hash'
-import File from './File'
+import UserFile from './UserFile'
 import { slugify } from '@ioc:Adonis/Addons/LucidSlugify'
 
 export default class User extends BaseModel {
@@ -45,8 +45,8 @@ export default class User extends BaseModel {
   @column()
   public status: string
 
-  @hasMany(() => File)
-  public files: HasMany<typeof File>
+  @hasMany(() => UserFile)
+  public files: HasMany<typeof UserFile>
 
   @beforeSave()
   public static async hashPassword(user: User) {

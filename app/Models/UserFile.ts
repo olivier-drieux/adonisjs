@@ -4,18 +4,21 @@ import User from './User'
 import fs from 'fs-extra'
 import Application from '@ioc:Adonis/Core/Application'
 
-export default class File extends BaseModel {
+export default class UserFile extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
   @column()
-  public type: FileType
+  public type: UserFileType
 
   @column()
-  public path: string
+  public name: string
 
   @column()
   public userId: number
+
+  @column()
+  public status: string
 
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
@@ -26,8 +29,9 @@ export default class File extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  public static deleteFile(file: File) {
-    fs.remove(Application.tmpPath(`uploads/${file.userId}`) + `/${file.path}`)
+  public delete() {
+    fs.remove(Application.tmpPath(`uploads/${this.userId}`) + `/${this.name}`)
+    return super.delete()
   }
 
   public static deleteFolder(userId: number) {
@@ -35,9 +39,14 @@ export default class File extends BaseModel {
   }
 }
 
-export enum FileType {
-  INSURANCE = "Justificatif d'assurance",
-  KBIS = 'K-bis',
-  FOREIGN_WORKER = "Justificatifs d'emplois étrangers",
-  OTHER = 'Autre',
+export enum UserFileType {
+  INSURANCE = 'INSURANCE',
+  KBIS = 'KBIS',
+  FOREIGN_WORKER = 'FOREIGN_WORKER',
+}
+
+export enum UserFileStatus {
+  AWAITING = 'AWAITING',
+  VALID = 'VALID',
+  INVALID = 'INVALID',
 }

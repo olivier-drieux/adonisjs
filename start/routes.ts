@@ -33,6 +33,7 @@ Route.group(() => {
   Route.group(() => {
     // User index, show, store
     Route.get('/:id', 'UsersController.show').as('users.show')
+    Route.post('/token', 'UsersController.auth').as('users.auth')
     Route.post('/email', 'UsersController.getByEmail').as('users.getByEmail')
     Route.post('/', 'UsersController.store').as('users.store')
     Route.patch('/:id', 'UsersController.update').as('users.update')
