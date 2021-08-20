@@ -41,13 +41,13 @@ export default class UsersController {
 
   public async getBy({ request }: HttpContextContract) {
     const { by, value } = request.body()
-    const user = await User.findBy(by, value)
+    Logger.info(`Getting user by '${by}' with value '${value}'...`)
+    const user = await User.findByOrFail(by, value)
     return user
   }
 
   public async getByEmail({ request }: HttpContextContract) {
     const { email } = request.body()
-    console.log('GetByEmail', email)
     const user = await User.findBy('email', email)
     return { email, exists: user !== null }
   }
